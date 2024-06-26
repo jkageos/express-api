@@ -1,15 +1,16 @@
+import "dotenv/config";
 import mongoose from "mongoose";
 import { createApp } from "./createApp.mjs";
 
 mongoose
-	.connect("mongodb://localhost/express_tutorial")
-	.then(() => console.log("Connected to Database"))
-	.catch((err) => console.log(`Error: ${err}`));
+  .connect(process.env.MONGO_DB_URI)
+  .then(() => console.log("Connected to Database"))
+  .catch((err) => console.log(`Error: ${err}`));
 
 const app = createApp();
 
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 9000;
 
-app.listen(PORT, () => {
-	console.log(`Running on Port ${PORT}`);
+app.listen(port, () => {
+  console.log(`Running on Port ${port}`);
 });
