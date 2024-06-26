@@ -1,0 +1,13 @@
+name: express-api
+
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongodb-data:/data/db
