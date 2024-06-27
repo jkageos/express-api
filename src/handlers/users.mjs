@@ -8,6 +8,10 @@ export const getUserByIdHandler = async (request, response) => {
     if (!user) return response.status(404).send({ message: "User not found" });
     return response.send(user);
   } catch (error) {
+    console.error(error);
+    if (error.kind === 'ObjectId') {
+      return response.status(400).send({ message: "Invalid user ID" });
+    }
     return response.status(500).send({ message: "Server error" });
   }
 };

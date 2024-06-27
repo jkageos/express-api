@@ -24,17 +24,21 @@ describe("create user and login", () => {
   });
 
   it("should log the user in and visit /api/auth/status and return auth user", async () => {
-    const response = await request(app)
+    const loginResponse = await request(app)
       .post("/api/auth")
-      .send({ username: "adam", password: "password" })
-      .then((res) => {
-        return request(app)
-          .get("/api/auth/status")
-          .set("Cookie", res.headers["set-cookie"]);
-      });
-    expect(response.statusCode).toBe(200);
-    expect(response.body.username).toBe("adam");
-    expect(response.body.email).toBe("adam@email.com");
+      .send({ username: "adam", password: "password" });
+
+    expect(loginResponse.statusCode).toBe(200);
+    
+    const cookies = loginResponse.headers['set-cookie'];
+    
+    const statusResponse = await request(app)
+      .get("/api/auth/status")
+      .set("Cookie", cookies);
+
+    expect(statusResponse.statusCode).toBe(200);
+    expect(statusResponse.body.username).toBe("adam");
+    expect(statusResponse.body.email).toBe("adam@email.com");
   });
 
   afterAll(async () => {

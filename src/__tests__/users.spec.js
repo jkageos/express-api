@@ -68,6 +68,42 @@ describe("get users", () => {
     expect(mockResponse.status).toHaveBeenCalledWith(404);
     expect(mockResponse.send).toHaveBeenCalledWith({ message: "User not found" });
   });
+
+  it("should return 400 for invalid user ID", async () => {
+    User.findById.mockRejectedValue({ kind: 'ObjectId' });
+
+    const mockRequest = {
+      params: { id: "invalid" },
+    };
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    };
+
+    await getUserByIdHandler(mockRequest, mockResponse);
+
+    expect(User.findById).toHaveBeenCalledWith("invalid");
+    expect(mockResponse.status).toHaveBeenCalledWith(400);
+    expect(mockResponse.send).toHaveBeenCalledWith({ message: "Invalid user ID" });
+  });
+
+  it("should return 500 for server error", async () => {
+    User.findById.mockRejectedValue(new Error("Database error"));
+
+    const mockRequest = {
+      params: { id: "789" },
+    };
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    };
+
+    await getUserByIdHandler(mockRequest, mockResponse);
+
+    expect(User.findById).toHaveBeenCalledWith("789");
+    expect(mockResponse.status).toHaveBeenCalledWith(500);
+    expect(mockResponse.send).toHaveBeenCalledWith({ message: "Server error" });
+  });
 });
 
 describe("create users", () => {
