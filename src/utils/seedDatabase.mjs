@@ -65,17 +65,16 @@ const seedDatabase = async () => {
     }
 
     // Create comments
+    const comments = [];
     for (let i = 0; i < 50; i++) {
       const comment = new Comment({
         content: faker.lorem.paragraph(),
         author: users[Math.floor(Math.random() * users.length)]._id,
         blog: blogs[Math.floor(Math.random() * blogs.length)]._id,
-        parentComment:
-          i > 10
-            ? faker.helpers.arrayElement([null, ...Array(i).keys()])
-            : null,
+        parentComment: i > 10 ? faker.helpers.arrayElement([null, ...comments.map(c => c._id)]) : null,
       });
-      await comment.save();
+      const savedComment = await comment.save();
+      comments.push(savedComment);
     }
 
     console.log("Database seeded successfully");
