@@ -6,6 +6,15 @@ import { User } from "../mongoose/schemas/user.mjs";
 
 const router = Router();
 
+router.get("/api/users", async (request, response) => {
+  try {
+    const users = await User.find().select('-password');
+    return response.json(users);
+  } catch (error) {
+    return response.status(500).json({ message: "Server error" });
+  }
+});
+
 router.get("/api/users/:id", getUserByIdHandler);
 
 router.post(
