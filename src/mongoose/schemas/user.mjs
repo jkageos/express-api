@@ -19,14 +19,18 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  bookmarks: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Blog"
-  }],
-  upvotedBlogs: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Blog"
-  }],
+  bookmarks: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Blog",
+    },
+  ],
+  upvotedBlogs: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Blog",
+    },
+  ],
 });
 
 export const User = mongoose.model("User", UserSchema);
