@@ -21,14 +21,20 @@ const seedDatabase = async () => {
 
     // Create users
     const users = [];
+    const adminUsers = [];
     for (let i = 0; i < 10; i++) {
+      const isAdmin = i < 3; // Make the first 3 users admins
       const user = new User({
         username: faker.internet.userName(),
         email: faker.internet.email(),
         password: hashPassword('password123'),
-        isAdmin: faker.datatype.boolean(),
+        isAdmin: isAdmin,
       });
-      users.push(await user.save());
+      const savedUser = await user.save();
+      users.push(savedUser);
+      if (isAdmin) {
+        adminUsers.push(savedUser);
+      }
     }
 
     // Create tags
@@ -40,17 +46,17 @@ const seedDatabase = async () => {
       tags.push(await tag.save());
     }
 
-    // Create blogs
+    // Create blogs (only by admin users)
     const blogs = [];
     for (let i = 0; i < 20; i++) {
       const blog = new Blog({
         title: faker.lorem.sentence(),
         content: faker.lorem.paragraphs(),
-        author: users[Math.floor(Math.random() * users.length)]._id,
+        author: adminUsers[Math.floor(Math.random() * adminUsers.length)]._id,
         estimatedReadTime: faker.datatype.number({ min: 1, max: 30 }),
         picture: faker.image.url(),
         video: faker.internet.url(),
-        upvotes: faker.datatype.number({ min: 0, max: 100 }),
+        upvotes: 0, // Start with 0 upvotes
         tags: faker.helpers.arrayElements(tags, faker.datatype.number({ min: 1, max: 3 })).map(tag => tag._id),
       });
       blogs.push(await blog.save());
