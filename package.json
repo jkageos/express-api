@@ -7,7 +7,8 @@
 		"test": "jest",
 		"test:e2e": "jest --testPathPattern=src/e2e",
 		"dev": "nodemon ./src/index.mjs",
-		"start": "node ./src/index.mjs"
+		"start": "node ./src/index.mjs",
+		"seed": "node ./src/utils/seedDatabase.mjs"
 	},
 	"keywords": [],
 	"author": "",
