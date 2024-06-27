@@ -1,15 +1,15 @@
-import mongoose from 'mongoose';
-import { faker } from '@faker-js/faker';
-import { User } from '../mongoose/schemas/user.mjs';
-import { Blog } from '../mongoose/schemas/blog.mjs';
-import { Tag } from '../mongoose/schemas/tag.mjs';
-import { Comment } from '../mongoose/schemas/comment.mjs';
-import { hashPassword } from './helpers.mjs';
+import { faker } from "@faker-js/faker";
+import "dotenv/config";
+import mongoose from "mongoose";
+import { Blog } from "../mongoose/schemas/blog.mjs";
+import { Comment } from "../mongoose/schemas/comment.mjs";
+import { Tag } from "../mongoose/schemas/tag.mjs";
+import { User } from "../mongoose/schemas/user.mjs";
+import { hashPassword } from "./helpers.mjs";
 
-mongoose.connect(`${process.env.MONGO_DB_URI}/${process.env.MONGO_DB_NAME}?authSource=admin`, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  `${process.env.MONGO_DB_URI}/${process.env.MONGO_DB_NAME}?authSource=admin`
+);
 
 const seedDatabase = async () => {
   try {
@@ -27,7 +27,7 @@ const seedDatabase = async () => {
       const user = new User({
         username: faker.internet.userName(),
         email: faker.internet.email(),
-        password: hashPassword('password123'),
+        password: hashPassword("password123"),
         isAdmin: isAdmin,
       });
       const savedUser = await user.save();
@@ -53,11 +53,13 @@ const seedDatabase = async () => {
         title: faker.lorem.sentence(),
         content: faker.lorem.paragraphs(),
         author: adminUsers[Math.floor(Math.random() * adminUsers.length)]._id,
-        estimatedReadTime: faker.datatype.number({ min: 1, max: 30 }),
+        estimatedReadTime: faker.number.int({ min: 1, max: 30 }),
         picture: faker.image.url(),
         video: faker.internet.url(),
         upvotes: 0, // Start with 0 upvotes
-        tags: faker.helpers.arrayElements(tags, faker.datatype.number({ min: 1, max: 3 })).map(tag => tag._id),
+        tags: faker.helpers
+          .arrayElements(tags, faker.number.int({ min: 1, max: 3 }))
+          .map((tag) => tag._id),
       });
       blogs.push(await blog.save());
     }
@@ -68,14 +70,17 @@ const seedDatabase = async () => {
         content: faker.lorem.paragraph(),
         author: users[Math.floor(Math.random() * users.length)]._id,
         blog: blogs[Math.floor(Math.random() * blogs.length)]._id,
-        parentComment: i > 10 ? faker.helpers.arrayElement([null, ...Array(i).keys()]) : null,
+        parentComment:
+          i > 10
+            ? faker.helpers.arrayElement([null, ...Array(i).keys()])
+            : null,
       });
       await comment.save();
     }
 
-    console.log('Database seeded successfully');
+    console.log("Database seeded successfully");
   } catch (error) {
-    console.error('Error seeding database:', error);
+    console.error("Error seeding database:", error);
   } finally {
     mongoose.connection.close();
   }
