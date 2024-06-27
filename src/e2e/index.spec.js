@@ -7,7 +7,7 @@ describe("/api/auth", () => {
   let app;
   beforeAll(() => {
     mongoose
-      .connect(process.env.MONGO_DB_URI)
+      .connect(`${process.env.MONGO_DB_URI}/${process.env.MONGO_DB_NAME}?authSource=admin`)
       .then(() => console.log("Connected to Test Database"))
       .catch((err) => console.log(`Error: ${err}`));
 

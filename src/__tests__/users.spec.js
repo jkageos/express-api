@@ -11,7 +11,7 @@ jest.mock("express-validator", () => ({
 	matchedData: jest.fn(() => ({
 		username: "test",
 		password: "password",
-		displayName: "test_name",
+		email: "test@email.com",
 	})),
 }));
 
@@ -38,7 +38,7 @@ describe("get users", () => {
 		expect(mockResponse.send).toHaveBeenCalledWith({
 			id: 2,
 			username: "jack",
-			displayName: "Jack",
+			email: "Jack@email.com",
 			password: "hello124",
 		});
 		expect(mockResponse.send).toHaveBeenCalledTimes(1);
@@ -75,7 +75,7 @@ describe("create users", () => {
 				id: 1,
 				username: "test",
 				password: "hashed_password",
-				displayName: "test_name",
+				email: "test@email.com",
 			});
 		await createUserHandler(mockRequest, mockResponse);
 		expect(validator.matchedData).toHaveBeenCalledWith(mockRequest);
@@ -84,7 +84,7 @@ describe("create users", () => {
 		expect(User).toHaveBeenCalledWith({
 			username: "test",
 			password: "hashed_password",
-			displayName: "test_name",
+			email: "test@email.com",
 		});
 
 		expect(saveMethod).toHaveBeenCalled();
@@ -93,7 +93,7 @@ describe("create users", () => {
 			id: 1,
 			username: "test",
 			password: "hashed_password",
-			displayName: "test_name",
+			email: "test@email.com",
 		});
 	});
 
