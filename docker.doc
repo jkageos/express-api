@@ -1,11 +1,11 @@
-# stop containers
+## stop containers
 docker stop $(docker ps -aq)
 
-# remove containers
+## remove containers
 docker rm $(docker ps -aq)
 
-# remove images
+## remove images
 docker rmi $(docker images -q)
 
-# remove volumes
+## remove volumes
 docker volume rm $(docker volume ls -q)

@@ -6,7 +6,7 @@
 	"scripts": {
 		"test": "jest",
 		"test:e2e": "jest --testPathPattern=src/e2e",
-		"start:dev": "nodemon ./src/index.mjs",
+		"dev": "nodemon ./src/index.mjs",
 		"start": "node ./src/index.mjs"
 	},
 	"keywords": [],

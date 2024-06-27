@@ -1,6 +1,6 @@
 import { Router } from "express";
 import usersRouter from "./users.mjs";
-import productsRouter from "./products.mjs";
+import productsRouter from "./blogs.mjs";
 import authRouter from "./auth.mjs";
 
 const router = Router();
