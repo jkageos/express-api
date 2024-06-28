@@ -1,0 +1,38 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest #if it causes an error change it to windows-latest or macos-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]  # Test against different Node.js versions
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests with coverage
+      run: npm test -- --coverage
+
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage-report
+        path: coverage/lcov-report
