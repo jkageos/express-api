@@ -8,6 +8,6 @@ services:
     env_file:
       - .env
     ports:
-      - 27017:27017
+      - 27018:27017
     volumes:
       - ./mongodb-data:/data/db
