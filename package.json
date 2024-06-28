@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.mjs",
 	"scripts": {
-		"test": "jest",
+		"test": "jest --coverage",
 		"test:e2e": "jest --testPathPattern=src/e2e",
 		"dev": "nodemon ./src/index.mjs",
 		"start": "node ./src/index.mjs",
